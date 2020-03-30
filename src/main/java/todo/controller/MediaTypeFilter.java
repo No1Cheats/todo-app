@@ -21,16 +21,18 @@ public class MediaTypeFilter extends HttpFilter {
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (request.getMethod().equals("POST")) {
-            request.setCharacterEncoding("UTF-8");
-            String value = request.getContentType();
-            //Don't know where to add Accept???
-            if (!Sanitizers.FORMATTING.and(Sanitizers.LINKS).sanitize(value).equals(value)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.sendRedirect("");
-                return;
-            }
+        if (!isValid(request.getContentType())) {
+            response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+            return;
+        }
+        if (!isValid(request.getHeader("Accept"))) {
+            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return;
         }
         chain.doFilter(request, response);
+    }
+
+    private boolean isValid(String mediaType) {
+        return mediaType == null || mediaType.contains("*/*") || mediaType.contains("application/json");
     }
 }

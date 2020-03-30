@@ -22,7 +22,6 @@ public class TodoListServlet extends HttpServlet {
     @Override
     public void init() {
         this.todoList = new TodoList();
-        //Test data
         this.todoList.addTodo(new Todo(1, "Do my homework", "Study", LocalDate.of(2020, 03, 30)));
         this.todoList.addTodo(new Todo(2, "Go shopping", "Home", LocalDate.of(2020, 03, 24)));
     }
