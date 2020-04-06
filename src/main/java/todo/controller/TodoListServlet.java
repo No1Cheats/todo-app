@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import todo.model.todos.Todo;
 import todo.model.todos.TodoList;
 import todo.model.todos.TodoNotFoundException;
+import todo.model.users.User;
+import todo.model.users.UserAdmin;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,17 +19,13 @@ import java.util.List;
 public class TodoListServlet extends HttpServlet {
 
     private ObjectMapper objectMapper = ObjectMapperFactory.createObjectMapper();
-    private TodoList todoList;
+    //private UserAdmin userAdmin = UserAdmin.getInstance();
 
-    @Override
-    public void init() {
-        this.todoList = new TodoList();
-        this.todoList.addTodo(new Todo(1, "Do my homework", "Study", LocalDate.of(2020, 03, 30)));
-        this.todoList.addTodo(new Todo(2, "Go shopping", "Home", LocalDate.of(2020, 03, 24)));
-    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User user = (User) request.getAttribute("user");
+        TodoList todoList = user.getTodoList();
         List<Todo> todos = todoList.getTodos(); //Will become the List that we'll return to the Client
 
         //Check if the Client is asking for a specific category if not we'll just return the json
@@ -50,6 +48,8 @@ public class TodoListServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Todo newTodo = objectMapper.readValue(request.getInputStream(), Todo.class); //Reads the json value coming in and transforms it into a java class object
+        User user = (User) request.getAttribute("user");
+        TodoList todoList = user.getTodoList();
         todoList.addTodo(newTodo);
         List<Todo> todos = todoList.getTodos(); //Will become the List that we'll return to the Client
         response.setStatus(HttpServletResponse.SC_OK);
@@ -59,6 +59,8 @@ public class TodoListServlet extends HttpServlet {
 
     @Override
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User user = (User) request.getAttribute("user");
+        TodoList todoList = user.getTodoList();
         String string = request.getRequestURI();
         int id = Integer.valueOf(string.substring(string.length() - 1)); //To get the id at the end of the URI
         Todo newTodo = objectMapper.readValue(request.getInputStream(), Todo.class);
@@ -76,6 +78,8 @@ public class TodoListServlet extends HttpServlet {
 
     @Override
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User user = (User) request.getAttribute("user");
+        TodoList todoList = user.getTodoList();
         String string = request.getRequestURI();
         int id = Integer.valueOf(string.substring(string.length() - 1)); //To get the id at the end of the URI
         try {

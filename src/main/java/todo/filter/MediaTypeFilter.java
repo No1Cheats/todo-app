@@ -1,7 +1,8 @@
-package todo.controller;
+package todo.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.owasp.html.Sanitizers;
+import todo.controller.ObjectMapperFactory;
 import todo.model.todos.Todo;
 
 import javax.servlet.FilterChain;
