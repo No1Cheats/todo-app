@@ -21,7 +21,7 @@ public class UserAdminServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try{
+        try {
             User newUser = objectMapper.readValue(request.getInputStream(), User.class);
             userAdmin.registerUser(newUser.getName(), newUser.getPassword());
             objectMapper.writeValue(response.getOutputStream(), "User " + newUser.getName() + " successfully created");
