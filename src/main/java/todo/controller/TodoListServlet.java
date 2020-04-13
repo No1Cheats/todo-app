@@ -19,8 +19,6 @@ import java.util.List;
 public class TodoListServlet extends HttpServlet {
 
     private ObjectMapper objectMapper = ObjectMapperFactory.createObjectMapper();
-    //private UserAdmin userAdmin = UserAdmin.getInstance();
-
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

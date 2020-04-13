@@ -27,17 +27,14 @@ public class AuthenticationFilter extends HttpFilter {
         try {
             newUser = authenticateUser(request);
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             e.printStackTrace();
+            return; //Good enuff
         }
-        User loggedInUser;
-        try {
-            loggedInUser = userAdmin.loginUser(newUser.getName(), newUser.getPassword());
-            request.setAttribute("user", loggedInUser);
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (InvalidCredentialsException e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            e.printStackTrace();
-        }
+        //User loggedInUser;
+        //loggedInUser = userAdmin.loginUser(newUser.getName(), newUser.getPassword());
+        request.setAttribute("user", newUser);
+        response.setStatus(HttpServletResponse.SC_OK);
         chain.doFilter(request, response);
     }
 
