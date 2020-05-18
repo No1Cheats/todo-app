@@ -2,7 +2,6 @@ package todo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import todo.model.todos.Todo;
 import todo.model.users.User;
 import todo.model.users.UserAdmin;
 import todo.model.users.UserAlreadyExistsException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/api/users/*")
 public class UserAdminServlet extends HttpServlet {

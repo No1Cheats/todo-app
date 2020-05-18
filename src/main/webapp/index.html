@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="css/styles.css">
 	<script src="js/lib/jquery-3.5.0.min.js"></script>
 
-	<script>let user = {name: 'Alice', password: 'Bob97'}; </script>
+	<script>let user = null; </script>
 
 	<script src="js/main.js" type="module"></script>
 </head>
@@ -16,7 +16,7 @@
 		<h1>Todo Application</h1>
 	</header>
 
-	<main>Please wait...</main>
+	<main>Please login first</main>
 
 	<footer>
 	<p>&copy; 2020</p>
@@ -31,6 +31,8 @@
 		</div>
 	</template>
 
+	<p><a href="#/login">&raquo; Login</a></p>
+
 	<template id="tpl-add-todo">
 		<div>
 			<h2>Add Todo</h2>
@@ -41,6 +43,20 @@
 				<input name="category">
 				<label>Due Date</label>
 				<input name="date" type="date">
+				<button data-action="add" class="primary">Add</button> <button data-action="cancel" class="secondary">Cancel</button>
+			</form>
+			<p data-field="error"></p>
+		</div>
+	</template>
+
+	<template id="tpl-login">
+		<div>
+			<h2>Login</h2>
+			<form>
+				<label>Username<sup>*</sup></label>
+				<input name="name" required>
+				<label>Password</label>
+				<input type="password" name="password" required>
 				<button data-action="add" class="primary">Add</button> <button data-action="cancel" class="secondary">Cancel</button>
 			</form>
 			<p data-field="error"></p>
