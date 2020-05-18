@@ -25,7 +25,7 @@ public class AuthenticationFilter extends HttpFilter {
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         User newUser = null;
         try {
-            newUser = authenticateUser(request);
+            newUser = authenticateUser(request); // authenticateUser Method is from AuthorizationHelper
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             e.printStackTrace();

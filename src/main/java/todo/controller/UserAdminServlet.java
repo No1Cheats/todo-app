@@ -1,5 +1,6 @@
 package todo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import todo.model.todos.Todo;
 import todo.model.users.User;
@@ -16,23 +17,27 @@ import java.util.List;
 @WebServlet("/api/users/*")
 public class UserAdminServlet extends HttpServlet {
 
-    private UserAdmin userAdmin = UserAdmin.getInstance(); //Singleton implementation
     private ObjectMapper objectMapper = ObjectMapperFactory.createObjectMapper();
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            User newUser = objectMapper.readValue(request.getInputStream(), User.class);
-            userAdmin.registerUser(newUser.getName(), newUser.getPassword());
-            objectMapper.writeValue(response.getOutputStream(), "User " + newUser.getName() + " successfully created");
-        } catch (UserAlreadyExistsException e) {
+            User user = objectMapper.readValue(request.getInputStream(), User.class);
+            UserAdmin userAdmin = UserAdmin.getInstance(); //Singleton implementation
+            userAdmin.registerUser(user.getName(), user.getPassword());
+            objectMapper.writeValue(response.getOutputStream(), "User " + user.getName() + " successfully created");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+        } catch (JsonProcessingException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
             e.printStackTrace();
-            return;
+        } catch (UserAlreadyExistsException e){
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            response.setContentType("application/json");
+            e.printStackTrace();
         }
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
+
     }
 
 }
